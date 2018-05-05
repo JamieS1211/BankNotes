@@ -1,11 +1,10 @@
 package com.github.jamies1211.banknotes;
 
 
-import com.github.jamies1211.banknotes.Data.BankNote.CustomData;
 import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.cause.NamedCause;
+import org.spongepowered.api.event.cause.EventContext;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.service.economy.EconomyService;
 import org.spongepowered.api.service.economy.account.UniqueAccount;
@@ -15,7 +14,6 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Optional;
 
-import static com.github.jamies1211.banknotes.Data.BankNote.CustomData.BANK_NOTE_VALUE;
 import static com.github.jamies1211.banknotes.Data.Messages.*;
 
 /**
@@ -27,9 +25,9 @@ public class TokenInteraction {
 		if (player.getItemInHand(HandTypes.MAIN_HAND).isPresent()) {
 			ItemStack itemInHand = player.getItemInHand(HandTypes.MAIN_HAND).get();
 			if (itemInHand.getItem().getName().equalsIgnoreCase("minecraft:paper")) {
-				if (itemInHand.get(CustomData.class).isPresent()) {
+				if (itemInHand.get(BankNoteData.class).isPresent()) {
 
-					Optional<Double> bankNoteValue = itemInHand.get(CustomData.class).get().toContainer().getDouble(BANK_NOTE_VALUE.getQuery());
+					Optional<Double> bankNoteValue = itemInHand.get(BankNoteData.class).get().toContainer().getDouble(MyKeys.BANK_NOTE_VALUE.getQuery());
 
 					if (bankNoteValue.isPresent()) {
 						int value = bankNoteValue.get().intValue();
@@ -46,7 +44,7 @@ public class TokenInteraction {
 
 						UniqueAccount account = economyService.getOrCreateAccount(player.getUniqueId()).get();
 
-						account.deposit(economyService.getDefaultCurrency(), new BigDecimal(value), Cause.of(NamedCause.source(BankNotes.getPlugin())));
+						account.deposit(economyService.getDefaultCurrency(), new BigDecimal(value), Cause.builder().append(BankNotes.getPlugin()).build(EventContext.empty()));
 
 						player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(prefix + bankNoteUsed
 								.replace("%price%", ("$" + new DecimalFormat("#,###,##0.00").format(value).toString()))));

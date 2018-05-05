@@ -7,7 +7,7 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.cause.NamedCause;
+import org.spongepowered.api.event.cause.EventContext;
 import org.spongepowered.api.item.inventory.transaction.InventoryTransactionResult;
 import org.spongepowered.api.service.economy.EconomyService;
 import org.spongepowered.api.service.economy.account.UniqueAccount;
@@ -44,7 +44,7 @@ public class BankNoteCommand implements CommandExecutor {
 
 						UniqueAccount account = optionalAccount.get();
 
-						if (account.withdraw(economyService.getDefaultCurrency(), new BigDecimal(price), Cause.of(NamedCause.source(BankNotes.getPlugin()))).getResult() == ResultType.SUCCESS) {
+						if (account.withdraw(economyService.getDefaultCurrency(), new BigDecimal(price), Cause.builder().append(BankNotes.getPlugin()).build(EventContext.empty())).getResult() == ResultType.SUCCESS) {
 
 							if (player.getInventory().offer(GenerateBankNote.generateBankNote(price)).getType() == InventoryTransactionResult.Type.SUCCESS) {
 								player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(prefix + bankNoteCreated

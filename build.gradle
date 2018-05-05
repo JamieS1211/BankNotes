@@ -1,5 +1,5 @@
 plugins {
-    id "com.qixalite.spongestart" version "1.4.6"
+    id "com.qixalite.spongestart" version "1.5.1"
     id 'java'
     id 'com.github.johnrengelman.shadow' version '1.2.3'
     //id 'org.spongepowered.plugin' version '0.5.1'
@@ -8,7 +8,7 @@ plugins {
 defaultTasks 'build', 'shadowJar'
 
 group = 'io.github.jamies1211.banknotes'
-version = '1.0.0-1.10.2'
+version = '2.0.0-1.12.2'
 description = 'Bank Notes'
 sourceCompatibility = 1.8
 
@@ -32,10 +32,10 @@ spongestart{
     eula true
 
     //optional configs
-    spongeForgeBuild '1844'
+    spongeForgeBuild '2794'
     forgeServerFolder 'run'
 }
 
 dependencies {
-    compile 'org.spongepowered:spongeapi:6.0.0-SNAPSHOT'
+    compile 'org.spongepowered:spongeapi:7.0.0-SNAPSHOT'
 }
